@@ -10,6 +10,9 @@ cnf.I2CPath = "/dev/i2c-2"
 // Make a sensor with the config
 irSensor := sensor.NewIrSensor(cnf)
 
+// Defer closing the i2c connection
+defer irSensor.Close()
+
 // Connect the sensor
 if err := irSensor.Connect(); err != nil {
   log.Fatal("failed to connect")
