@@ -16,6 +16,7 @@ func main() {
 	cnf.Logger = log
 
 	irSensor := sensor.NewIrSensor(cnf)
+	defer irSensor.Close()
 	if err := irSensor.Connect(); err != nil {
 		log.Fatal("failed to connect")
 	}
