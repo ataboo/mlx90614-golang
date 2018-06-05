@@ -2,7 +2,7 @@
 Golang library for reading from an [MLX90614 thermal sensor](https://www.melexis.com/en/documents/documentation/datasheets/datasheet-mlx90614) over i2c.
 
 # Basic Usage
-```
+```Go
 // Make a config and change any values needed
 cnf := config.DefaultConfig()
 cnf.I2CPath = "/dev/i2c-2"
