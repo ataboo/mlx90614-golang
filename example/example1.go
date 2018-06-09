@@ -3,26 +3,19 @@ package main
 import (
 	"github.com/ataboo/mlx90614-golang/sensor"
 	"github.com/ataboo/mlx90614-golang/config"
-	"github.com/op/go-logging"
 	"time"
 	"fmt"
 )
 
 func main() {
-	logging.SetLevel(logging.DEBUG, "my-logger")
-	log := logging.MustGetLogger("my-logger")
-	cnf := config.DefaultConfig()
-	cnf.I2CAddr = 0x5b
-	cnf.Logger = log
-
-	irSensor := sensor.NewIrSensor(cnf)
+	irSensor := sensor.NewIrSensor(config.DefaultConfig())
 	defer irSensor.Close()
 	if err := irSensor.Connect(); err != nil {
-		log.Fatal("failed to connect")
+		//log.Fatal("failed to connect")
 	}
 
 	tick := time.Tick(time.Second * 1)
-	for {
+	for i := 0; i < 10; i++ {
 		select {
 		case <-tick:
 			irSensor.ReadTemps()

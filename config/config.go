@@ -23,8 +23,9 @@ type Config struct {
 	RegSleep byte
 
 	ReadTimeout time.Duration
-	I2CPath string
-    I2CAddr int
+	// `/dev/i2c-1` => 1
+	I2CBus      int
+    I2CAddr     uint8
 
 	Logger  *logging.Logger
 }
@@ -48,8 +49,8 @@ func DefaultConfig() *Config {
 		RegSleep: 0xFF,
 
 		ReadTimeout: 1000,
-		I2CPath: "/dev/i2c-1",
-		I2CAddr: 0x5A,
+		I2CBus:      1,
+		I2CAddr:     0x5A,
 
 		Logger: logging.MustGetLogger("mlx90614"),
 	}
