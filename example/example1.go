@@ -9,13 +9,9 @@ import (
 
 func main() {
 	irSensor := sensor.NewIrSensor(config.DefaultConfig())
-	defer irSensor.Close()
-	if err := irSensor.Connect(); err != nil {
-		//log.Fatal("failed to connect")
-	}
 
 	tick := time.Tick(time.Second * 1)
-	for i := 0; i < 10; i++ {
+	for {
 		select {
 		case <-tick:
 			irSensor.ReadTemps()
@@ -24,7 +20,8 @@ func main() {
 				irSensor.AmbientTemp.FahrenheitPretty(),
 				irSensor.ObjectTemp.CelsiusPretty(),
 			)
+		default:
+			//ctrl-c works
 		}
-
 	}
 }

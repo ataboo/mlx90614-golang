@@ -8,6 +8,8 @@ import (
 	"os/exec"
 	"fmt"
 	"bytes"
+	"strings"
+	"strconv"
 )
 
 func main() {
@@ -18,7 +20,7 @@ func main() {
 
 }
 
-func connect() error {
+func connect() (int16, error) {
 	cmd := exec.Command("i2cget", "-y", "1", "0x5a", "0x06", "w")
 
 	out := bytes.Buffer{}
@@ -30,10 +32,11 @@ func connect() error {
 	err := cmd.Run()
 	if err != nil {
 		fmt.Println(fmt.Sprint(err) + ": " + stdErr.String())
-		return err
+		return 0, err
 	}
 
-	fmt.Println("Result: " + out.String())
+	rawTemp := strings.Trim(out.String(), "\n")
+	temp64, err := strconv.ParseInt(rawTemp, 0, 16)
 
-	return nil
+	return int16(temp64), nil
 }
