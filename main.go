@@ -4,10 +4,10 @@ package main
 // #include <stdlib.h>
 import "C"
 import (
-	"errors"
 	"log"
+	"os/exec"
 	"fmt"
-	"unsafe"
+	"bytes"
 )
 
 func main() {
@@ -19,25 +19,21 @@ func main() {
 }
 
 func connect() error {
-	defer C.bcm2835_i2c_end()
+	cmd := exec.Command("i2cget", "-y", "1", "0x5a", "0x06", "w")
 
-	if C.bcm2835_init() == 0 {
-		return errors.New("Init: failed")
+	out := bytes.Buffer{}
+	stdErr := bytes.Buffer{}
+
+	cmd.Stdout = &out
+	cmd.Stderr = &stdErr
+
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(fmt.Sprint(err) + ": " + stdErr.String())
+		return err
 	}
 
-	C.bcm2835_i2c_end()
-	C.bcm2835_i2c_begin()
-	C.bcm2835_i2c_setSlaveAddress(0x5a)
-
-	buf := ""
-	pBuf := unsafe.Pointer(C.CString(buf))
-	defer C.free(pBuf)
-	reg := string([]byte{0x07})
-	pReg := unsafe.Pointer(C.CString(reg))
-	defer C.free(pReg)
-	C.bcm2835_i2c_read_register_rs((*C.char)(pReg), (*C.char)(pBuf), 2)
-
-	fmt.Sprintf("\nRead: %+v", buf)
+	fmt.Println("Result: " + out.String())
 
 	return nil
 }
