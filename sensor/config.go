@@ -1,4 +1,4 @@
-package config
+package sensor
 
 import (
 	"github.com/op/go-logging"
@@ -18,12 +18,11 @@ type Config struct {
 
 func DefaultConfig() *Config {
 	return &Config{
-		RegTAmb: "0x06",
+		RegTAmb:  "0x06",
 		RegTObj1: "0x07",
-		I2CBus:      1,
-		I2CAddr:     "0x5A",
-
-		Logger: logging.MustGetLogger("mlx90614"),
+		I2CBus:   1,
+		I2CAddr:  "0x5A",
+		Logger:   logging.MustGetLogger("mlx90614"),
 	}
 }
 

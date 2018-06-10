@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/op/go-logging"
 
-	"github.com/ataboo/mlx90614-golang/config"
 	"os/exec"
 	"bytes"
 	"strings"
@@ -15,10 +14,10 @@ import (
 type IrSensor struct {
 	AmbientTemp Temp
 	ObjectTemp Temp
-	Config *config.Config
+	Config *Config
 }
 
-func NewIrSensor(cnf *config.Config) *IrSensor {
+func NewIrSensor(cnf *Config) *IrSensor {
 	sensor := IrSensor{
 		Config: cnf,
 	}
